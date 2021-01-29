@@ -18,9 +18,11 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -148,12 +150,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.eliminar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-                builder1.setMessage("¿Eliminar tareas seleccionadas?");
-                builder1.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                builder1.setMessage(R.string.seguroEliminar);
+                builder1.setPositiveButton(R.string.eliminar, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         for(int i :itemsSeleccionados){
@@ -169,11 +171,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-                builder1.setNegativeButton("Cancelar", null);
+                builder1.setNegativeButton(R.string.cancelar, null);
                 builder1.create().show();
             }
         });
-        builder.setNegativeButton("Cancelar", null);
+        builder.setNegativeButton(R.string.cancelar, null);
         if(!tareasDescartadas.isEmpty()){
             builder.create().show();
         }
@@ -181,6 +183,36 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_principal, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+        if(id ==  R.id.modificar){
+            ArrayList<Tarea> listaTareasNoCompletadas = new ArrayList<>();
+            listaTareasNoCompletadas = (ArrayList<Tarea>) myTareaLab.getTareasNoCompletadas();
+
+            ArrayAdapter<Tarea> listaAdapter = new ArrayAdapter<>(this.getApplicationContext(), android.R.layout.simple_list_item_single_choice, listaTareasNoCompletadas);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            TextView title = new TextView(this);
+            title.setText(R.string.modficar);
+            title.setTextSize(25);
+            title.setPadding(25, 25, 25, 25);
+            title.setBackgroundColor(getResources().getColor(R.color.teal_200));
+            title.setTextColor(getResources().getColor(R.color.white));
+            title.setGravity(Gravity.CENTER);
+            builder.setCustomTitle(title);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -188,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Presiona atrás de nuevo para salir.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.pressBack), Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -246,17 +278,23 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.aceptar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Tarea tarea = new Tarea(titulo.getText().toString(), fechaLimite, importante, false, false);
-                myTareaLab.addTarea(tarea);
-                //Comprobar que fragmento se muestra y notificar cambios
-                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_fragment);
-                if(currentFragment instanceof ListaCompletaFragment){
-                    ((ListaCompletaFragment) currentFragment).actualizarLista();
-                }else if(currentFragment instanceof ListaImportantesFragment){
-                    ((ListaImportantesFragment) currentFragment).actualizarLista();
-                }else if(currentFragment instanceof ListaFinalizadasFragment){
-                    ((ListaFinalizadasFragment) currentFragment).actualizarLista();
+                if(titulo.getText().toString().isEmpty() || fechaLimite == null){
+                    Toast.makeText(getApplicationContext(), "Debe rellenar todos los campos.", Toast.LENGTH_SHORT).show();
+                    addTask();
+                }else{
+                    Tarea tarea = new Tarea(titulo.getText().toString(), fechaLimite, importante, false, false);
+                    myTareaLab.addTarea(tarea);
+                    //Comprobar que fragmento se muestra y notificar cambios
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_fragment);
+                    if(currentFragment instanceof ListaCompletaFragment){
+                        ((ListaCompletaFragment) currentFragment).actualizarLista();
+                    }else if(currentFragment instanceof ListaImportantesFragment){
+                        ((ListaImportantesFragment) currentFragment).actualizarLista();
+                    }else if(currentFragment instanceof ListaFinalizadasFragment){
+                        ((ListaFinalizadasFragment) currentFragment).actualizarLista();
+                    }
                 }
+
             }
         });
 
@@ -273,7 +311,9 @@ public class MainActivity extends AppCompatActivity {
         botonCancelar.setTextColor(Color.RED);
 
     }
+    public void modificar(){
 
+    }
     private void showDatePickerDialog(){
         int day, month, year;
         Calendar calendario = Calendar.getInstance();

@@ -11,4 +11,10 @@
     <string name="cancelar">Cancelar</string>
     <string name="tareasVencidas">Tareas vencidas</string>
     <string name="addTarea">Añadir tarea</string>
+    <string name="modficar">Modficar</string>
+    <string name="seguroEliminar">¿Eliminar tareas seleccionadas?</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="pressBack">Presiona atrás de nuevo para salir.</string>
+    <string name="eliminarTarea">¿Eliminar tarea?</string>
+
 </resources>

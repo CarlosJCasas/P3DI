@@ -140,9 +140,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder confirmarEliminar = new AlertDialog.Builder(context);
-                    confirmarEliminar.setMessage("¿Eliminar tarea?");
-                    confirmarEliminar.setNegativeButton("Cancelar", null);
-                    confirmarEliminar.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    confirmarEliminar.setMessage(R.string.eliminarTarea);
+                    confirmarEliminar.setNegativeButton(R.string.cancelar, null);
+                    confirmarEliminar.setPositiveButton(R.string.aceptar, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             TareaLab.get(context).delTarea(tarea);
