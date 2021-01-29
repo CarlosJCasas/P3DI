@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">P3DI</string>
+    <string name="lista">Lista completa</string>
+    <string name="importantes">Importantes</string>
+    <string name="completada">Finalizadas</string>
+    <string name="agregar_titulo">Agrega un título a la tarea</string>
+    <string name="fecha_de_vencimiento">Fecha de vencimiento</string>
+    <string name="importante">Importante</string>
+    <string name="agregar_campos">Debes rellenar los dos campos.</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="tareasVencidas">Tareas vencidas</string>
+    <string name="addTarea">Añadir tarea</string>
+</resources>
